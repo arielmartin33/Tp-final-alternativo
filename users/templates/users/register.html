@@ -10,6 +10,9 @@
             {{ form|crispy }}
             <button class="btn btn-secondary" type="submit">Registrese</button>
         </form>
+        <div class="pt-3">
+            <small class="text-muted">Posee cuenta? <a href="{% url 'login' %}" class="ml-2">Ingresar</a></small>
+        </div>
     </div>
 </div>
 {% endblock content %}
