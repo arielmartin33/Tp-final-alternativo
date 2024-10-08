@@ -1,0 +1,21 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 col-12 mx-5 mt-3">
+        <a class="btn btn-outline-secondary" href="{% url 'index' %}">Volver</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 col-12 mx-md-auto mb-3 pb-2 mx-3">
+        <h1>{{ object.titulo }}</h1>
+        <p class="text-muted">{{ object.fecha }}</p>
+        <p class="text-muted">Publicado por {{ object.autor.username }}</p>
+        <div>
+            {{ object.contenido|safe }}
+        </div>
+
+    </div>
+</div>
+{% endblock content %}
