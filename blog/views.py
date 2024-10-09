@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from typing import Any
+from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import ListView, DetailView
 from .models import Articulo
+from django.shortcuts import get_object_or_404
 
 class Index(ListView):
     model = Articulo
@@ -12,3 +14,23 @@ class Index(ListView):
 class DetalleArticuloView(DetailView):
     model = Articulo
     template_name = 'blog/detalle_articulo.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(DetalleArticuloView, self).get_context_data(*args, **kwargs)
+        context['liked_by_user'] = False
+        articulo = Articulo.objects.get(id=self.kwargs.get('pk'))
+        if articulo.likes.filter(pk=self.request.user.id).exists():
+            context['liked_by_user'] = True
+        return context
+
+class LikeArticulo(View):
+    def post(self, request, pk):
+        articulo = get_object_or_404(Articulo, id=pk)
+        user = request.user
+        if articulo.likes.filter(pk=user.id).exists():
+            articulo.likes.remove(user)
+        else:
+            articulo.likes.add(user)
+
+            articulo.save()
+            return redirect('detalle_articulo', pk=pk)
