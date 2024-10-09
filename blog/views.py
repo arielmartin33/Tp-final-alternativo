@@ -11,6 +11,12 @@ class Index(ListView):
     template_name = 'blog/index.html'
     paginate_by = 1
 
+class Destacado(ListView):
+    model = Articulo
+    queryset = Articulo.objects.filter(destacado=True).order_by('-fecha')
+    template_name = 'blog/destacado.html'
+    paginate_by = 1
+
 class DetalleArticuloView(DetailView):
     model = Articulo
     template_name = 'blog/detalle_articulo.html'
